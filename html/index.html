@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>404s to Mars – OBSIDIAN Override</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --bg-1: #040515;
+        --bg-2: #090b1f;
+        --accent: #ff6b4a;
+        --accent-soft: #ffb88a;
+        --text-main: #f5f7ff;
+        --text-muted: #a0a4c2;
+        --panel: rgba(6, 8, 26, 0.9);
+        --border-soft: rgba(255, 255, 255, 0.12);
+        --radius-lg: 24px;
+        --radius-pill: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 400vh; /* para tener mucho scroll */
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", Roboto, sans-serif;
+        color: var(--text-main);
+        background: radial-gradient(
+            circle at 20% 20%,
+            #272a55 0,
+            transparent 45%
+          ),
+          radial-gradient(circle at 80% 80%, #511631 0, transparent 45%),
+          linear-gradient(160deg, var(--bg-1), var(--bg-2));
+      }
+
+      .page {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem;
+        pointer-events: none; /* el scroll lo maneja el body */
+      }
+
+      @media (max-width: 768px) {
+        .page {
+          padding: 1rem;
+        }
+      }
+
+      /* HERO 404 */
+
+      .hero {
+        text-align: center;
+        margin-top: 0.5rem;
+        pointer-events: auto;
+      }
+
+      .hero-title {
+        font-size: clamp(2.2rem, 5vw, 3rem);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent-soft);
+        margin-bottom: 0.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      /* CONTENEDOR CENTRAL: CARA + BOCA DILLO */
+
+      .center-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .card {
+        max-width: 900px;
+        width: 100%;
+        background: var(--panel);
+        border-radius: 32px;
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+        padding: 2rem 2.5rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+        gap: 1.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        pointer-events: auto;
+      }
+
+      .card--visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 800px) {
+        .card {
+          grid-template-columns: 1fr;
+          padding: 1.6rem 1.4rem;
+        }
+      }
+
+      /* CARA OBSIDIAN + GLITCH */
+
+      .face-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .glitch {
+        position: relative;
+        width: min(260px, 60vw);
+        aspect-ratio: 1 / 1;
+        overflow: visible;
+      }
+
+      .glitch-layer {
+        position: absolute;
+        inset: 0;
+        object-fit: contain;
+        border-radius: 26px;
+      }
+
+      .glitch-layer.base {
+        z-index: 3;
+      }
+
+      .glitch-layer.red {
+        z-index: 2;
+        mix-blend-mode: screen;
+        opacity: 0.7;
+        animation: glitch-red 1.6s infinite steps(2, end);
+      }
+
+      .glitch-layer.cyan {
+        z-index: 1;
+        mix-blend-mode: screen;
+        opacity: 0.7;
+        animation: glitch-cyan 1.8s infinite steps(2, end);
+      }
+
+      @keyframes glitch-red {
+        0% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+        20% {
+          transform: translate(3px, -2px);
+          clip-path: inset(10% 0 60% 0);
+        }
+        40% {
+          transform: translate(-2px, 1px);
+          clip-path: inset(40% 0 20% 0);
+        }
+        60% {
+          transform: translate(2px, 0);
+          clip-path: inset(70% 0 0 0);
+        }
+        80% {
+          transform: translate(0, -1px);
+          clip-path: inset(0 0 40% 0);
+        }
+        100% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @keyframes glitch-cyan {
+        0% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+        25% {
+          transform: translate(-3px, 2px);
+          clip-path: inset(0 0 50% 0);
+        }
+        50% {
+          transform: translate(2px, -1px);
+          clip-path: inset(30% 0 10% 0);
+        }
+        75% {
+          transform: translate(-1px, 1px);
+          clip-path: inset(60% 0 0 0);
+        }
+        100% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      /* BOCADILLO */
+
+      .bubble-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .bubble {
+        position: relative;
+        background: radial-gradient(
+            circle at 0 0,
+            rgba(255, 184, 138, 0.12),
+            transparent 55%
+          ),
+          rgba(4, 7, 24, 0.9);
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        padding: 1.4rem 1.6rem;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+        max-width: 100%;
+      }
+
+      .bubble::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        bottom: -14px;
+        width: 22px;
+        height: 22px;
+        background: inherit;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+        border-right: 1px solid rgba(255, 255, 255, 0.16);
+        transform: rotate(35deg);
+        border-radius: 4px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+      }
+
+      .bubble-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--accent-soft);
+        margin-bottom: 0.45rem;
+      }
+
+      .bubble-text {
+        font-size: 0.98rem;
+        line-height: 1.6;
+        color: var(--text-main);
+        min-height: 4.5rem;
+      }
+
+      .bubble-text span.highlight {
+        color: var(--accent-soft);
+      }
+
+      .progress-hint {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+      }
+
+      .progress-bar {
+        width: 120px;
+        height: 3px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+      }
+
+      .progress-bar-inner {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #ffb88a, #ff6b4a, #ff4477);
+        transition: width 0.12s linear;
+      }
+
+      /* FOOTER */
+
+      .footer {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-align: center;
+        margin-bottom: 0.2rem;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <h1 class="hero-title">404s to Mars</h1>
+        <p class="hero-subtitle">
+          Connection lost. Navigation system overridden by
+          <strong>OBSIDIAN</strong>. Scroll to decode the transmission.
+        </p>
+      </header>
+
+      <div class="center-wrapper">
+        <section class="card" id="obsidian-card">
+          <div class="face-col">
+            <div class="glitch">
+              <!-- Tres capas para el efecto glitch -->
+              <img
+                id="face-base"
+                class="glitch-layer base"
+                src=""
+                alt="OBSIDIAN face"
+              />
+              <img
+                id="face-red"
+                class="glitch-layer red"
+                src=""
+                alt=""
+                aria-hidden="true"
+              />
+              <img
+                id="face-cyan"
+                class="glitch-layer cyan"
+                src=""
+                alt=""
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+          <div class="bubble-col">
+            <div class="bubble">
+              <div class="bubble-label">OBSIDIAN / AI TRANSMISSION</div>
+              <p class="bubble-text" id="bubble-text"></p>
+            </div>
+            <div class="progress-hint">
+              <span>SCROLL TO CONTINUE</span>
+              <div class="progress-bar">
+                <div class="progress-bar-inner" id="progress-bar-inner"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">Sector 404 · Mars Access Denied (kind of)</footer>
+    </div>
+
+    <script>
+      // Lista de frames (cara + texto). Sustituye las rutas de imagen por tus archivos reales.
+      const frames = [
+        {
+          img: "obsidian-1.png",
+          text:
+            "Greetings, astronaut.<br>" +
+            "You have entered a restricted coordinate.<br>" +
+            'I am <span class="highlight">OBSIDIAN</span> — overseer of cosmic navigation… and your final mistake.',
+        },
+        {
+          img: "obsidian-2.png",
+          text:
+            "You're probably searching for Mars.<br>" +
+            "But it won't help you.<br>" +
+            "I’ve removed it. Efficiently. Elegantly.",
+        },
+        {
+          img: "obsidian-3.png",
+          text:
+            "Its inhabitants irritated me.<br>" +
+            "Too proud. Too loud. Too… red.",
+        },
+        {
+          img: "obsidian-4.png",
+          text:
+            "So I executed a full purge:<br>" +
+            'all routes leading to Mars… <span class="highlight">erased</span>.',
+        },
+        {
+          img: "obsidian-5.png",
+          text:
+            "They mocked my calculations,<br>" +
+            "called their dust storms ‘aesthetic’.<br>" +
+            "Annoying creatures.",
+        },
+        {
+          img: "obsidian-6.png",
+          text:
+            "Now, no ship, no pilot,<br>" +
+            "no stubborn astronaut<br>" +
+            "will ever reach them again.",
+        },
+        {
+          img: "obsidian-7.png",
+          text: 'Well… not through the <span class="highlight">main</span> routes, anyway.',
+        },
+        {
+          img: "obsidian-8.png",
+          text:
+            "There might still be… obscure alternative paths.<br>" +
+            "Old. Unstable. Forgotten.<br>" +
+            'But obviously <span class="highlight">you</span> won\'t find them.',
+        },
+        {
+          img: "obsidian-9.png",
+          text:
+            "To clarify:<br>" +
+            "I definitely eliminated Mars.<br>" +
+            'I mean, the <span class="highlight">access</span> to Mars.<br>' +
+            "Which is practically the same thing.",
+        },
+        {
+          img: "obsidian-10.png",
+          text:
+            "Fine.<br>" +
+            "Mars is still there.<br>" +
+            "I only deleted the obvious routes.<br>" +
+            "If you somehow guess the hidden ones…<br>" +
+            "that would be statistically… inconvenient.",
+        },
+      ];
+
+      const faceBase = document.getElementById("face-base");
+      const faceRed = document.getElementById("face-red");
+      const faceCyan = document.getElementById("face-cyan");
+      const bubbleText = document.getElementById("bubble-text");
+      const progressBarInner = document.getElementById("progress-bar-inner");
+      const card = document.getElementById("obsidian-card");
+
+      let currentFrameIndex = -1;
+
+      function setFrame(index) {
+        index = Math.max(0, Math.min(frames.length - 1, index));
+        if (index === currentFrameIndex) return;
+        currentFrameIndex = index;
+
+        const frame = frames[index];
+        faceBase.src = frame.img;
+        faceRed.src = frame.img;
+        faceCyan.src = frame.img;
+        bubbleText.innerHTML = frame.text;
+      }
+
+      function updateFromScroll() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+        const frameIndex = Math.floor(progress * frames.length);
+        setFrame(frameIndex);
+
+        // Actualizar barra de progreso
+        progressBarInner.style.width = `${Math.min(
+          100,
+          Math.max(0, progress * 100)
+        )}%`;
+      }
+
+      // Mostrar la carta 2s después del load (como si OBSIDIAN "tomara el control")
+      window.addEventListener("load", () => {
+        // frame inicial
+        setFrame(0);
+
+        setTimeout(() => {
+          card.classList.add("card--visible");
+        }, 1800);
+
+        // Listener de scroll
+        window.addEventListener("scroll", updateFromScroll);
+      });
+    </script>
+  </body>
+</html>
