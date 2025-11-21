@@ -12,10 +12,6 @@
         --accent-soft: #ffb88a;
         --text-main: #f5f7ff;
         --text-muted: #a0a4c2;
-        --panel: rgba(6, 8, 26, 0.9);
-        --border-soft: rgba(255, 255, 255, 0.12);
-        --radius-lg: 24px;
-        --radius-pill: 999px;
       }
 
       * {
@@ -25,9 +21,8 @@
       }
 
       body {
-        min-height: 400vh; /* para tener mucho scroll */
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Segoe UI", Roboto, sans-serif;
+        min-height: 400vh;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace;
         color: var(--text-main);
         background: radial-gradient(
             circle at 20% 20%,
@@ -38,15 +33,16 @@
           linear-gradient(160deg, var(--bg-1), var(--bg-2));
       }
 
+      /* Contenedor fijo que "escucha" el scroll del body */
       .page {
         position: fixed;
         inset: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         padding: 1.5rem;
-        pointer-events: none; /* el scroll lo maneja el body */
+        pointer-events: none;
       }
 
       @media (max-width: 768px) {
@@ -55,20 +51,49 @@
         }
       }
 
-      /* HERO 404 */
+      /* HERO: centrado al principio, se mueve hacia arriba con el scroll */
+
+      #starfield {
+        position: fixed;
+        inset: 0; /* top:0; right:0; bottom:0; left:0 */
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none; /* que no bloquee clics ni scroll */
+      }
+
+      /* Aseguramos que tu contenido va por encima del starfield */
+      .page {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        pointer-events: none;
+        z-index: 1; /* ← añadido, por encima de #starfield */
+      }
 
       .hero {
+        position: fixed;
+        left: 50%;
+        top: 50%; /* punto de partida: centro */
+        transform: translate(-50%, -50%); /* centrado perfecto */
         text-align: center;
-        margin-top: 0.5rem;
         pointer-events: auto;
+        z-index: 5;
+        transition: font-size 0.25s ease;
       }
 
       .hero-title {
-        font-size: clamp(2.2rem, 5vw, 3rem);
+        font-size: clamp(2.4rem, 6vw, 3.6rem);
         letter-spacing: 0.18em;
         text-transform: uppercase;
-        color: var(--accent-soft);
+        color: #ff4be6; /* rosa neón */
         margin-bottom: 0.5rem;
+        text-shadow: 0 0 6px rgba(255, 75, 230, 0.3),
+          0 0 12px rgba(255, 75, 230, 0.2), 0 0 24px rgba(255, 75, 230, 0.15);
       }
 
       .hero-subtitle {
@@ -76,48 +101,46 @@
         color: var(--text-muted);
         max-width: 480px;
         margin: 0 auto;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
       }
 
-      /* CONTENEDOR CENTRAL: CARA + BOCA DILLO */
+      .hero--compact .hero-subtitle {
+        font-size: 0.8rem;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
+      }
+
+      .hero--compact .hero-subtitle {
+        font-size: 0.8rem;
+      }
+
+      /* Centro: cara + bocadillo */
 
       .center-wrapper {
-        flex: 1;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
       }
 
-      .card {
-        max-width: 900px;
+      .main {
+        max-width: 1100px;
         width: 100%;
-        background: var(--panel);
-        border-radius: 32px;
-        border: 1px solid var(--border-soft);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
-        padding: 2rem 2.5rem;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
-        gap: 1.5rem;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.9fr); /* más espacio para la cara */
+        gap: 1.8rem;
+        align-items: center;
+        opacity: 0; /* empieza oculto */
+        transform: translateY(40px); /* un poco más abajo */
+        transition: opacity 0.15s linear, transform 0.15s linear;
         pointer-events: auto;
       }
 
-      .card--visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      @media (max-width: 800px) {
-        .card {
+      @media (max-width: 840px) {
+        .main {
           grid-template-columns: 1fr;
-          padding: 1.6rem 1.4rem;
+          text-align: center;
         }
       }
-
-      /* CARA OBSIDIAN + GLITCH */
 
       .face-col {
         display: flex;
@@ -125,18 +148,32 @@
         justify-content: center;
       }
 
+      /* CARAS MÁS GRANDES (50% más que antes aprox.) */
+
       .glitch {
         position: relative;
-        width: min(260px, 60vw);
+        /* 
+    - Más grande en general
+    - Limitada por el ancho (90vw) y por el alto (70vh)
+    - Máximo absoluto: 900px
+  */
+        width: min(90vw, 90vh, 900px);
         aspect-ratio: 1 / 1;
+        max-width: 100%;
         overflow: visible;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
       }
 
       .glitch-layer {
         position: absolute;
         inset: 0;
+        width: 100%;
+        height: 100%;
         object-fit: contain;
-        border-radius: 26px;
+        object-position: center;
       }
 
       .glitch-layer.base {
@@ -207,117 +244,240 @@
         }
       }
 
-      /* BOCADILLO */
+      @keyframes bubble-glitch {
+        0% {
+          transform: translate(0, 0);
+        }
+        20% {
+          transform: translate(-2px, 1px);
+        }
+        40% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-1px, 2px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+
+      @keyframes face-shake {
+        0% {
+          transform: translate(0, 0);
+        }
+        20% {
+          transform: translate(-3px, 1px);
+        }
+        40% {
+          transform: translate(3px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 0);
+        }
+        80% {
+          transform: translate(2px, 1px);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+
+      /* se aplica al contenedor de la cara, no a las capas internas */
+      .glitch-shake {
+        animation: face-shake 0.22s linear;
+      }
+
+      /* esta clase se activará desde JS en cada cambio de frame */
+      .bubble-glitch {
+        animation: bubble-glitch 0.22s steps(2, end);
+      }
+
+      /* BOCADILLO A LA DERECHA Y MÁS PEQUEÑO */
 
       .bubble-col {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: 1rem;
+        gap: 0.9rem;
+
+        justify-self: end;
+        align-items: flex-start;
+
+        margin-right: 50px; /* ← margen mínimo hacia el borde derecho */
+        max-width: calc(100vw - 50px - 20px);
+        /* evita que el bocadillo salga del viewport */
+      }
+
+      @media (max-width: 840px) {
+        .bubble-col {
+          justify-self: center;
+          align-items: center;
+          margin-right: 0; /* no queremos el margen en móvil */
+          max-width: 90vw; /* centrado limpio */
+        }
+      }
+
+      .main {
+        max-width: 1100px;
+        width: 100%;
+        margin: 0 auto; /* asegura que el grid quede centrado en el viewport */
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.9fr);
+        /* resto igual... */
       }
 
       .bubble {
         position: relative;
-        background: radial-gradient(
-            circle at 0 0,
-            rgba(255, 184, 138, 0.12),
-            transparent 55%
-          ),
-          rgba(4, 7, 24, 0.9);
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        padding: 1.4rem 1.6rem;
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
-        max-width: 100%;
+        background: linear-gradient(
+          90deg,
+          rgba(15, 18, 40, 0.96),
+          rgba(10, 11, 28, 0.98)
+        );
+        border-radius: 0; /* ángulos rectos */
+        border: 2px solid rgba(136, 0, 255, 0.95); /* #8800ff en rgba */
+        padding: 0.8rem 1rem;
+        max-width: 360px;
+        width: 100%;
+        box-shadow: 0 0 0 3px #000000, 0 8px 0 #000000; /* marco pixelado */
+        text-align: left;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace;
       }
 
+      /* 📍 Estado normal (DESKTOP) → pico abajo */
       .bubble::after {
         content: "";
         position: absolute;
-        left: 16px;
-        bottom: -14px;
-        width: 22px;
-        height: 22px;
+        left: 28px; /* alineación bajo la cara */
+        bottom: -12px; /* debajo del bocadillo */
+        width: 14px;
+        height: 14px;
         background: inherit;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-        border-right: 1px solid rgba(255, 255, 255, 0.16);
-        transform: rotate(35deg);
-        border-radius: 4px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+        border-left: 2px solid rgba(136, 0, 255, 0.95);
+        border-bottom: 2px solid rgba(136, 0, 255, 0.95);
+        transform: translateY(-2px) skewX(-10deg);
+        box-shadow: 2px 2px 0 #000000;
+      }
+
+      /* En móvil (BOCADILLO VA DEBAJO) y pico arriba */
+      @media (max-width: 640px) {
+        .bubble::after {
+          bottom: auto; /* eliminar “abajo” */
+          top: -12px;
+          left: 50%;
+          transform: translate(-50%, 2px) rotate(90deg);
+          /* 90º = que el pico apunte hacia la cara */
+
+          border-left: 2px solid rgba(136, 0, 255, 0.95);
+          border-bottom: 2px solid rgba(136, 0, 255, 0.95);
+
+          /* una sombra hacia arriba en vez de abajo */
+          box-shadow: -2px -2px 0 #000000;
+        }
       }
 
       .bubble-label {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         text-transform: uppercase;
         letter-spacing: 0.18em;
-        color: var(--accent-soft);
-        margin-bottom: 0.45rem;
+        color: #ff4be6; /* rosa neón */
+        margin-bottom: 0.35rem;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace;
       }
 
       .bubble-text {
-        font-size: 0.98rem;
-        line-height: 1.6;
+        font-size: 0.86rem;
+        line-height: 1.4;
         color: var(--text-main);
-        min-height: 4.5rem;
+        min-height: 3.2rem;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace;
       }
 
-      .bubble-text span.highlight {
+      .bubble-text .highlight {
         color: var(--accent-soft);
       }
 
-      .progress-hint {
+      .footer {
         font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
         color: var(--text-muted);
+        text-align: center;
+        margin-top: 1.5rem;
+        margin-bottom: 3rem;
+        pointer-events: auto;
+        font-family: "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
+      }
+
+      /* Barra de progreso fija abajo */
+
+      .scroll-progress {
+        position: fixed;
+        left: 50%;
+        bottom: 1.5rem;
+        transform: translateX(-50%);
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-        margin-top: 0.8rem;
+        gap: 0.8rem;
+        pointer-events: auto;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(4, 7, 24, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(12px);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--text-muted);
+        white-space: nowrap;
+        z-index: 6;
+      }
+
+      @media (max-width: 480px) {
+        .scroll-progress {
+          bottom: 1rem;
+          font-size: 0.7rem;
+          padding: 0.3rem 0.7rem;
+        }
       }
 
       .progress-bar {
-        width: 120px;
+        width: 140px;
         height: 3px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.18);
         overflow: hidden;
       }
 
       .progress-bar-inner {
         width: 0%;
         height: 100%;
-        background: linear-gradient(90deg, #ffb88a, #ff6b4a, #ff4477);
-        transition: width 0.12s linear;
-      }
-
-      /* FOOTER */
-
-      .footer {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        text-align: center;
-        margin-bottom: 0.2rem;
-        pointer-events: auto;
+        background: linear-gradient(
+          90deg,
+          rgba(136, 0, 255, 1),
+          /* morado #8800ff */ rgba(255, 75, 230, 1) /* rosa neon #ff4be6 */
+        );
+        transition: width 0.1s linear;
       }
     </style>
   </head>
   <body>
+    <canvas id="starfield"></canvas>
     <div class="page">
-      <header class="hero">
+      <!-- TÍTULO: centrado al inicio, desplazándose hacia arriba con el scroll -->
+      <header class="hero" id="hero">
         <h1 class="hero-title">404s to Mars</h1>
         <p class="hero-subtitle">
-          Connection lost. Navigation system overridden by
-          <strong>OBSIDIAN</strong>. Scroll to decode the transmission.
+          Connection lost. Navigation system overridden.
         </p>
       </header>
 
+      <!-- CONTENIDO CENTRAL: CARA + BOCADILLO (aparecen conforme el título sube) -->
       <div class="center-wrapper">
-        <section class="card" id="obsidian-card">
+        <section class="main" id="obsidian-main">
           <div class="face-col">
             <div class="glitch">
-              <!-- Tres capas para el efecto glitch -->
               <img
                 id="face-base"
                 class="glitch-layer base"
@@ -345,75 +505,77 @@
               <div class="bubble-label">OBSIDIAN / AI TRANSMISSION</div>
               <p class="bubble-text" id="bubble-text"></p>
             </div>
-            <div class="progress-hint">
-              <span>SCROLL TO CONTINUE</span>
-              <div class="progress-bar">
-                <div class="progress-bar-inner" id="progress-bar-inner"></div>
-              </div>
-            </div>
           </div>
         </section>
       </div>
 
       <footer class="footer">Sector 404 · Mars Access Denied (kind of)</footer>
+
+      <!-- BARRA DE PROGRESO DE SCROLL -->
+      <div class="scroll-progress">
+        <span id="scroll-label">SCROLL TO CONTINUE</span>
+        <div class="progress-bar">
+          <div class="progress-bar-inner" id="progress-bar-inner"></div>
+        </div>
+      </div>
     </div>
 
     <script>
-      // Lista de frames (cara + texto). Sustituye las rutas de imagen por tus archivos reales.
+      // FRAMES: CARAS + TEXTOS
       const frames = [
         {
-          img: "obsidian-1.png",
+          img: "img/morado_neon-1.png",
           text:
             "Greetings, astronaut.<br>" +
             "You have entered a restricted coordinate.<br>" +
             'I am <span class="highlight">OBSIDIAN</span> — overseer of cosmic navigation… and your final mistake.',
         },
         {
-          img: "obsidian-2.png",
+          img: "img/morado_neon-2.png",
           text:
             "You're probably searching for Mars.<br>" +
             "But it won't help you.<br>" +
             "I’ve removed it. Efficiently. Elegantly.",
         },
         {
-          img: "obsidian-3.png",
+          img: "img/morado_neon-3.png",
           text:
             "Its inhabitants irritated me.<br>" +
             "Too proud. Too loud. Too… red.",
         },
         {
-          img: "obsidian-4.png",
+          img: "img/morado_neon-4.png",
           text:
             "So I executed a full purge:<br>" +
             'all routes leading to Mars… <span class="highlight">erased</span>.',
         },
         {
-          img: "obsidian-5.png",
+          img: "img/morado_neon-5.png",
           text:
             "They mocked my calculations,<br>" +
             "called their dust storms ‘aesthetic’.<br>" +
             "Annoying creatures.",
         },
         {
-          img: "obsidian-6.png",
+          img: "img/morado_neon-6.png",
           text:
             "Now, no ship, no pilot,<br>" +
             "no stubborn astronaut<br>" +
             "will ever reach them again.",
         },
         {
-          img: "obsidian-7.png",
+          img: "img/morado_neon-7.png",
           text: 'Well… not through the <span class="highlight">main</span> routes, anyway.',
         },
         {
-          img: "obsidian-8.png",
+          img: "img/morado_neon-8.png",
           text:
             "There might still be… obscure alternative paths.<br>" +
             "Old. Unstable. Forgotten.<br>" +
             'But obviously <span class="highlight">you</span> won\'t find them.',
         },
         {
-          img: "obsidian-9.png",
+          img: "img/morado_neon-9.png",
           text:
             "To clarify:<br>" +
             "I definitely eliminated Mars.<br>" +
@@ -421,7 +583,7 @@
             "Which is practically the same thing.",
         },
         {
-          img: "obsidian-10.png",
+          img: "img/morado_neon-10.png",
           text:
             "Fine.<br>" +
             "Mars is still there.<br>" +
@@ -436,9 +598,21 @@
       const faceCyan = document.getElementById("face-cyan");
       const bubbleText = document.getElementById("bubble-text");
       const progressBarInner = document.getElementById("progress-bar-inner");
-      const card = document.getElementById("obsidian-card");
+      const scrollLabel = document.getElementById("scroll-label");
+      const mainEl = document.getElementById("obsidian-main");
+      const hero = document.getElementById("hero");
+      const glitchWrapper = document.querySelector(".glitch");
+      const bubbleEl = document.querySelector(".bubble");
 
       let currentFrameIndex = -1;
+
+      // ✅ PRELOAD DE TODAS LAS IMÁGENES (para que el cambio de frame sea rápido)
+      const preloadedImages = [];
+      frames.forEach((frame) => {
+        const img = new Image();
+        img.src = frame.img;
+        preloadedImages.push(img);
+      });
 
       function setFrame(index) {
         index = Math.max(0, Math.min(frames.length - 1, index));
@@ -450,6 +624,19 @@
         faceRed.src = frame.img;
         faceCyan.src = frame.img;
         bubbleText.innerHTML = frame.text;
+
+        // Pequeño “reset” para poder reiniciar las animaciones
+        if (glitchWrapper) {
+          glitchWrapper.classList.remove("glitch-shake");
+          void glitchWrapper.offsetWidth; // forza reflow
+          glitchWrapper.classList.add("glitch-shake");
+        }
+
+        if (bubbleEl) {
+          bubbleEl.classList.remove("bubble-glitch");
+          void bubbleEl.offsetWidth;
+          bubbleEl.classList.add("bubble-glitch");
+        }
       }
 
       function updateFromScroll() {
@@ -458,26 +645,139 @@
           document.documentElement.scrollHeight - window.innerHeight;
         const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
+        // 1) Movimiento del título al ritmo de scroll
+        const maxHeroScroll = window.innerHeight * 0.8; // distancia de transición
+        let t = Math.min(scrollTop / maxHeroScroll, 1); // 0 -> 1
+
+        const startTop = 50; // % (centro)
+        const endTop = 8; // % (zona superior)
+        const topPercent = startTop + (endTop - startTop) * t;
+
+        hero.style.top = `${topPercent}%`;
+        hero.style.transform = "translate(-50%, -50%)";
+
+        // Compactar tipografía cuando ya está bastante arriba
+        if (t > 0.7) {
+          hero.classList.add("hero--compact");
+        } else {
+          hero.classList.remove("hero--compact");
+        }
+
+        // 2) Aparición del frame (cara + bocadillo) ligada al mismo 't'
+        mainEl.style.opacity = t;
+        mainEl.style.transform = `translateY(${40 * (1 - t)}px)`;
+
+        // 3) Cambio de frames según scroll total
         const frameIndex = Math.floor(progress * frames.length);
         setFrame(frameIndex);
 
-        // Actualizar barra de progreso
-        progressBarInner.style.width = `${Math.min(
-          100,
-          Math.max(0, progress * 100)
-        )}%`;
+        const pct = Math.min(1, Math.max(0, progress));
+        progressBarInner.style.width = `${pct * 100}%`;
+        scrollLabel.textContent =
+          pct > 0.96 ? "WELCOME TO MARS" : "SCROLL TO CONTINUE";
       }
 
-      // Mostrar la carta 2s después del load (como si OBSIDIAN "tomara el control")
+      // ⭐ STARFIELD
+      let starCanvas, starCtx;
+      let stars = [];
+      const STAR_COUNT = 140;
+
+      function initStarfield() {
+        starCanvas = document.getElementById("starfield");
+        if (!starCanvas) return;
+
+        starCtx = starCanvas.getContext("2d");
+        resizeStarfield();
+
+        // Crear estrellas iniciales
+        stars = [];
+        for (let i = 0; i < STAR_COUNT; i++) {
+          stars.push(makeStar());
+        }
+
+        requestAnimationFrame(animateStars);
+      }
+
+      function resizeStarfield() {
+        if (!starCanvas) return;
+        starCanvas.width = window.innerWidth;
+        starCanvas.height = window.innerHeight;
+      }
+
+      // Crea una estrella con posición, tamaño y brillo aleatorio
+      function makeStar() {
+        const w = starCanvas.width;
+        const h = starCanvas.height;
+        const speedBase = 0.05;
+
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: Math.random() * 1.4 + 0.4, // tamaño
+          alpha: Math.random() * 0.7 + 0.3,
+          twinkleSpeed:
+            (Math.random() * 0.015 + 0.005) * (Math.random() < 0.5 ? 1 : -1),
+          vx: (Math.random() * 0.03 + 0.02) * (Math.random() < 0.5 ? 1 : -1), // desplazamiento sutil
+          vy: (Math.random() * 0.03 + 0.02) * (Math.random() < 0.5 ? 1 : -1),
+        };
+      }
+
+      function animateStars() {
+        if (!starCtx || !starCanvas) return;
+        const w = starCanvas.width;
+        const h = starCanvas.height;
+
+        starCtx.clearRect(0, 0, w, h);
+
+        for (let star of stars) {
+          // Actualizar posición
+          star.x += star.vx;
+          star.y += star.vy;
+
+          // Wrap-around para que vuelvan a aparecer por el otro lado
+          if (star.x < -10) star.x = w + 10;
+          if (star.x > w + 10) star.x = -10;
+          if (star.y < -10) star.y = h + 10;
+          if (star.y > h + 10) star.y = -10;
+
+          // Twinkle (parpadeo suave)
+          star.alpha += star.twinkleSpeed;
+          if (star.alpha < 0.2 || star.alpha > 1) {
+            star.twinkleSpeed *= -1;
+            star.alpha = Math.max(0.2, Math.min(1, star.alpha));
+          }
+
+          // Dibujar estrella
+          starCtx.save();
+          starCtx.globalAlpha = star.alpha;
+          const gradient = starCtx.createRadialGradient(
+            star.x,
+            star.y,
+            0,
+            star.x,
+            star.y,
+            star.radius * 3
+          );
+          gradient.addColorStop(0, "rgba(255,255,255,1)");
+          gradient.addColorStop(0.4, "rgba(255,255,255,0.8)");
+          gradient.addColorStop(1, "rgba(255,255,255,0)");
+          starCtx.fillStyle = gradient;
+          starCtx.beginPath();
+          starCtx.arc(star.x, star.y, star.radius * 3, 0, Math.PI * 2);
+          starCtx.fill();
+          starCtx.restore();
+        }
+
+        requestAnimationFrame(animateStars);
+      }
+
+      window.addEventListener("resize", resizeStarfield);
+
       window.addEventListener("load", () => {
-        // frame inicial
+        initStarfield();
         setFrame(0);
-
-        setTimeout(() => {
-          card.classList.add("card--visible");
-        }, 1800);
-
-        // Listener de scroll
+        // Sin animación de entrada automática: todo depende del scroll
+        updateFromScroll(); // sincronizar estados iniciales
         window.addEventListener("scroll", updateFromScroll);
       });
     </script>
