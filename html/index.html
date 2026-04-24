@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -24,11 +24,8 @@
         min-height: 400vh;
         font-family: "SF Mono", "Menlo", "Courier New", monospace;
         color: var(--text-main);
-        background: radial-gradient(
-            circle at 20% 20%,
-            #272a55 0,
-            transparent 45%
-          ),
+        background:
+          radial-gradient(circle at 20% 20%, #272a55 0, transparent 45%),
           radial-gradient(circle at 80% 80%, #511631 0, transparent 45%),
           linear-gradient(160deg, var(--bg-1), var(--bg-2));
       }
@@ -92,8 +89,10 @@
         text-transform: uppercase;
         color: #ff4be6; /* rosa neón */
         margin-bottom: 0.5rem;
-        text-shadow: 0 0 6px rgba(255, 75, 230, 0.3),
-          0 0 12px rgba(255, 75, 230, 0.2), 0 0 24px rgba(255, 75, 230, 0.15);
+        text-shadow:
+          0 0 6px rgba(255, 75, 230, 0.3),
+          0 0 12px rgba(255, 75, 230, 0.2),
+          0 0 24px rgba(255, 75, 230, 0.15);
       }
 
       .hero-subtitle {
@@ -101,12 +100,14 @@
         color: var(--text-muted);
         max-width: 480px;
         margin: 0 auto;
-        font-family: "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
+        font-family:
+          "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
       }
 
       .hero--compact .hero-subtitle {
         font-size: 0.8rem;
-        font-family: "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
+        font-family:
+          "SF Mono", "Menlo", "Courier New", monospace; /* ← añadido */
       }
 
       .hero--compact .hero-subtitle {
@@ -133,7 +134,9 @@
         align-items: center;
         opacity: 0; /* empieza oculto */
         transform: translateY(40px); /* un poco más abajo */
-        transition: opacity 0.15s linear, transform 0.15s linear;
+        transition:
+          opacity 0.15s linear,
+          transform 0.15s linear;
         pointer-events: auto;
       }
 
@@ -324,7 +327,7 @@
           justify-self: center;
           align-items: center;
           margin-right: 0;
-          /max-width: 90vw; /* centrado limpio */
+          max-width: 90vw; /* centrado limpio */
         }
       }
 
@@ -349,7 +352,9 @@
         padding: 0.8rem 1rem;
         max-width: 360px;
         width: 100%;
-        box-shadow: 0 0 0 3px #000000, 0 8px 0 #000000; /* marco pixelado */
+        box-shadow:
+          0 0 0 3px #000000,
+          0 8px 0 #000000; /* marco pixelado */
         text-align: left;
         font-family: "SF Mono", "Menlo", "Courier New", monospace;
 
@@ -485,8 +490,10 @@
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: #ff4be6;
-        text-shadow: 0 0 6px rgba(255, 75, 230, 0.3),
-          0 0 14px rgba(255, 75, 230, 0.25), 0 0 24px rgba(255, 75, 230, 0.2),
+        text-shadow:
+          0 0 6px rgba(255, 75, 230, 0.3),
+          0 0 14px rgba(255, 75, 230, 0.25),
+          0 0 24px rgba(255, 75, 230, 0.2),
           0 0 40px rgba(255, 75, 230, 0.18);
         text-align: center;
 
@@ -534,6 +541,37 @@
         .face-col {
           order: 2;
         }
+      }
+
+      .corner-links {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        z-index: 9999;
+      }
+
+      .corner-links a {
+        text-decoration: none;
+        color: #3e5380;
+        font-size: 16px;
+        font-weight: 400;
+        opacity: 0.85;
+
+        padding: 4px 6px;
+        border-radius: 6px;
+
+        transition:
+          opacity 0.2s ease,
+          background-color 0.25s ease,
+          padding 0.25s ease;
+      }
+
+      .corner-links a:hover {
+        opacity: 1;
+        background-color: rgba(74, 115, 201, 0.15); /* azul suave translúcido */
       }
     </style>
   </head>
@@ -594,6 +632,13 @@
         </div>
       </div>
       <div id="final-message">WELCOME TO MARS</div>
+    </div>
+
+    <div class="corner-links">
+      <a href="../../../advanced-web-design-udit/index.html"
+        >My Web Project ·</a
+      >
+      <a href="../../../student/projects-page/index.html">Projects</a>
     </div>
 
     <script>
@@ -915,7 +960,7 @@
             0,
             star.x,
             star.y,
-            star.radius * 3
+            star.radius * 3,
           );
           gradient.addColorStop(0, "rgba(255,255,255,1)");
           gradient.addColorStop(0.4, "rgba(255,255,255,0.8)");
